@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  ADS103-iHungry
 //
-//  Created by wade chen on 12/10/20.
+//  Created by Chris Chong on 12/10/20.
 //
 
 import UIKit

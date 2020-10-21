@@ -2,20 +2,21 @@
 //  ShopData.swift
 //  ADS103-iHungry
 //
-//  Created by wade chen on 13/10/20.
+//  Created by Chris Chong on 13/10/20.
 //
 
 import Foundation
 import UIKit
 
-struct ShopData {
-    var mainImage: UIImage
-    var name: String
-    var address: String
-    var phoneNumber: String
-    var starRating: String
-    var description: String
-    var recommendations: [UIImage]
+struct  ShopData{
+    var type: ShopType = .shop1
+    var mainImage: String = ""
+    var name: String = ""
+    var address: String = ""
+    var phoneNumber: String = ""
+    var starRating: String = ""
+    var description: String = ""
+    var recommendations: [String] = []
 }
 
 enum selection: Int {
@@ -23,3 +24,6 @@ enum selection: Int {
     bar = 1,
     restaurant = 2
 }
+
+
+

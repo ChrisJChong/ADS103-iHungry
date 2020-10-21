@@ -2,7 +2,7 @@
 //  QuestionViewController.swift
 //  ADS103-iHungry
 //
-//  Created by wade chen on 12/10/20.
+//  Created by Chris Chong on 12/10/20.
 //
 
 import UIKit
@@ -15,10 +15,14 @@ class QuestionViewController: UIViewController {
     @IBOutlet weak var answerButton2: UIButton!
     @IBOutlet weak var answerButton3: UIButton!
     @IBOutlet weak var answerButton4: UIButton!
+    @IBOutlet weak var buttonImage1: UIImageView!
+    @IBOutlet weak var buttonImage2: UIImageView!
+    @IBOutlet weak var buttonImage3: UIImageView!
+    @IBOutlet weak var buttonImage4: UIImageView!
     
     @IBOutlet weak var questionNumber: UILabel!
     
-    var shop = [ShopData]()
+    var listOfShops = [ShopData]()
     
     var answersChosen: [Answer] = []
     
@@ -27,47 +31,50 @@ class QuestionViewController: UIViewController {
     var questions: [Question] = [
         Question(text: "What is your budget?",
                  answers: [
-                    Answer(text: "< $15", type: [.shop1, .shop2, .shop3]),
-                    Answer(text: "$15 - $30", type: [.shop1, .shop2, .shop3]),
-                    Answer(text: "$30 - $50", type: [.shop1, .shop2, .shop3]),
-                    Answer(text: "$50 >", type: [.shop1, .shop2, .shop3])
+                    Answer(text: "< $15", type: [.shop1, .shop2, .shop3,.shop4]),
+                    Answer(text: "$15 - $30", type: [.shop2, .shop3]),
+                    Answer(text: "$30 - $50", type: [.shop1, .shop3, .shop4]),
+                    Answer(text: "$50 >", type: [.shop4, .shop2])
                  ]),
-        Question(text: "Choose your preferred meal time: ",
+        Question(text: "What genre of music do you prefer? ",
                  answers: [
-                    Answer(text: "Breakfast (8am - 10am)", type: [.shop1, .shop2, .shop3]),
-                    Answer(text: "Brunch (10am - 12pm)", type: [.shop1, .shop2, .shop3]),
-                    Answer(text: "Lunch (12pm - 3pm)", type: [.shop1, .shop2, .shop3]),
-                    Answer(text: "Dinner (5pm - 9pm)", type: [.shop1, .shop2, .shop3])
+                    Answer(text: "Jazz", type: [.shop4, .shop2, .shop3]),
+                    Answer(text: "Hip hop", type: [.shop1, .shop4, .shop3]),
+                    Answer(text: "Classical", type: [.shop1, .shop2]),
+                    Answer(text: "Pop", type: [.shop1, .shop2, .shop3,.shop4])
                  ]),
         Question(text: "What do you feel like having?",
                  answers: [
                     Answer(text: "Coffee", type: [.shop1, .shop2, .shop3]),
                     Answer(text: "Food", type: [.shop1, .shop2, .shop3]),
-                    Answer(text: "Alcohol", type: [.shop1, .shop2, .shop3]),
-                    Answer(text: "Dessert", type: [.shop1, .shop2, .shop3])
+                    Answer(text: "Alcohol", type: [.shop4, .shop2, .shop3]),
+                    Answer(text: "Dessert", type: [.shop1, .shop2, .shop4])
                  ]),
-        Question(text: "Which of the following would you like to go to?",
+        Question(text: "Where would you like to go after?",
                  answers: [
-                    Answer(text: "Cinema", type: [.shop1, .shop2, .shop3]),
-                    Answer(text: "Swimming Pool", type: [.shop1, .shop2, .shop3]),
-                    Answer(text: "Shopping Mall", type: [.shop1, .shop2, .shop3]),
-                    Answer(text: "Bowling Alley", type: [.shop1, .shop2, .shop3])
+                    Answer(text: "Cinema", type: [.shop2]),
+                    Answer(text: "Swimming Pool", type: [.shop2, .shop3]),
+                    Answer(text: "Shopping Mall", type: [.shop1, .shop2, .shop3,.shop4]),
+                    Answer(text: "Bowling Alley", type: [.shop1, .shop4])
                  ])
     ]
-    
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        //navigationItem.hidesBackButton = false
-        // Do any additional setup after loading the view.
+        
+        buttonImage1.image = UIImage(imageLiteralResourceName: "button")
+        buttonImage2.image = UIImage(imageLiteralResourceName: "button")
+        buttonImage3.image = UIImage(imageLiteralResourceName: "button")
+        buttonImage4.image = UIImage(imageLiteralResourceName: "button")
+        
+        shuffleAnswersAndQuestions()
+        updateUI()
     }
     
     func updateUI() {
-        
         let currentQuestion = questions[questionIndex]
         
-        navigationItem.title = "Question #\(questionIndex+1)"
+        navigationItem.title = "QUESTION #\(questionIndex+1)"
         questionLabel.text = currentQuestion.text
         questionNumber.text = "\(questionIndex+1) of 4"
         
@@ -107,15 +114,24 @@ class QuestionViewController: UIViewController {
             performSegue(withIdentifier: "RecommendationIdentifier", sender: nil)
         }
     }
+    
+    func shuffleAnswersAndQuestions() {
+        //Randomises answers for each question in the array
+        questions[0].shuffleAnswers()
+        questions[1].shuffleAnswers()
+        questions[2].shuffleAnswers()
+        questions[3].shuffleAnswers()
+
+        //Randomises each questions in the array
+        questions.shuffle()
+    }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
         if segue.identifier == "RecommendationIdentifier" {
-            
+            let recommendationViewController = segue.destination as! RecommendationViewController
+            recommendationViewController.responses = answersChosen
+            recommendationViewController.listOfShops = listOfShops
         }
     }
-    
-
 }
